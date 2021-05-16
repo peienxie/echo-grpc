@@ -12,6 +12,25 @@ message EchoResponse {
     string message = 1;
 }
 
+// Request type for EchoStreaming service
+message EchoStreamingRequest {
+    // Message string for echo request
+    string message = 1;
+    // Total message count should be reply
+    int32 count = 2;
+    // The interval time between every response messages
+    int32 interval = 3;
+}
+
+// Response type for EchoStreaming service
+message EchoStreamingResponse {
+    // Message string for echo response
+    string message = 1;
+    // The remaining count of reponse messages
+    int32 remaining = 2;
+}
+
 service EchoService {
     rpc Echo (EchoRequest) returns (EchoResponse);
+    rpc EchoStreaming (EchoStreamingRequest) returns (stream EchoStreamingResponse);
 }
