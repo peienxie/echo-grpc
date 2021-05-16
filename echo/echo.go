@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 
 	"google.golang.org/grpc/peer"
 )
 
-type EchoServer struct {}
-
+type EchoServer struct{}
 
 func NewEchoServer() *EchoServer {
 	return &EchoServer{}
@@ -38,4 +38,20 @@ func (s *EchoServer) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoRes
 	var resp pb.EchoResponse
 	resp.Message = req.Message
 	return &resp, nil
+}
+
+func (s *EchoServer) EchoStreaming(req *pb.EchoStreamingRequest, stream pb.EchoService_EchoStreamingServer) error {
+	log.Printf("receive request: %+v\n", req)
+	for i := 0; i < int(req.Count); i++ {
+		resp := &pb.EchoStreamingResponse{}
+		resp.Message = req.Message
+		resp.Remaining = int32(int(req.Count) - i - 1)
+		log.Printf("sending response: %+v\n", resp)
+		if err := stream.Send(resp); err != nil {
+			return err
+		}
+		time.Sleep(time.Duration(req.Interval) * time.Millisecond)
+	}
+	log.Printf("send complete\n")
+	return nil
 }
