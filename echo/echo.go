@@ -39,4 +39,3 @@ func (s *EchoServer) Echo(ctx context.Context, req *pb.EchoRequest) (*pb.EchoRes
 	resp.Message = req.Message
 	return &resp, nil
 }
-
