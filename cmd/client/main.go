@@ -60,7 +60,7 @@ func doNormalEcho(client pb.EchoServiceClient) error {
 }
 
 func doStreamingEcho(client pb.EchoServiceClient) error {
-	
+
 	for {
 		text := getMessage()
 		if text == "q" {
@@ -72,7 +72,7 @@ func doStreamingEcho(client pb.EchoServiceClient) error {
 			fmt.Printf("invalid count value: %d\n", count)
 			continue
 		}
-		
+
 		fmt.Printf("Start processing streaming echo message with grpc server\n")
 		ctx, cancel := context.WithTimeout(context.Background(), 120*time.Second)
 		defer cancel()
@@ -85,7 +85,7 @@ func doStreamingEcho(client pb.EchoServiceClient) error {
 		if err != nil {
 			return err
 		}
-		
+
 		for {
 			resp, err := stream.Recv()
 			if err != nil && err != io.EOF {

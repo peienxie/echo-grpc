@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-var  (
+var (
 	host = "localhost"
 	port = 9001
 )
@@ -23,7 +23,7 @@ func main() {
 	log.Printf("Listening on %s\n", apiListener.Addr().String())
 
 	echoServer := echo.NewEchoServer()
-	
+
 	grpc := grpc.NewServer()
 	pb.RegisterEchoServiceServer(grpc, echoServer)
 	grpc.Serve(apiListener)
